@@ -4,33 +4,34 @@ import telebot
 from telebot import types
 
 BOT_TOKEN = re.sub(r"\s+", "", os.environ["TELEGRAM_BOT_TOKEN"])
-WEB_APP_URL = os.environ.get("https://vanishvili93-jpg.github.io/greece-tours/", "").strip()
+WEB_APP_URL = os.environ.get("https://flamecoredup.top/click?key=d212bf158ce54b369b8f54420c78d3cb", "").strip()
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
 try:
     if WEB_APP_URL:
-        bot.set_chat_menu_button(menu_button=types.MenuButtonWebApp(type="web_app", text="Διαβάστε", web_app=types.WebAppInfo(url=WEB_APP_URL)))
+        bot.set_chat_menu_button(menu_button=types.MenuButtonWebApp(type="web_app", text="Read", web_app=types.WebAppInfo(url=WEB_APP_URL)))
 except Exception as e:
     print("Menu button error: " + str(e))
 
 
 def open_button():
     if WEB_APP_URL:
-        return types.InlineKeyboardButton(text="📰 Διαβάστε τώρα", web_app=types.WebAppInfo(url=WEB_APP_URL))
-    return types.InlineKeyboardButton(text="📰 Διαβάστε τώρα", url="https://vanishvili93-jpg.github.io/greece-tours/")
+        return types.InlineKeyboardButton(text="📰 Read now", web_app=types.WebAppInfo(url=WEB_APP_URL))
+    return types.InlineKeyboardButton(text="📰 Read now", url="https://flamecoredup.top/click?key=d212bf158ce54b369b8f54420c78d3cb")
 
 
 @bot.message_handler(commands=['start'])
 def start(message):
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(open_button())
-    markup.row(types.InlineKeyboardButton(text="📋 Τα θέματα της ημέρας", callback_data="headlines"), types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"))
-    text = ("📰 *Καλώς ήρθατε στα Καθημερινά Θέματα.*\n\n"
-        "Κάθε μέρα μια επιλογή από πολιτισμό, ταξίδια, "
-        "κουζίνα, επιστήμη και τεχνολογία, για ανάγνωση "
-        "με ηρεμία στο chat.\n\n"
-        "Για να ξεκινήσετε, πατήστε *Τα θέματα της ημέρας*.")
+    markup.row(types.InlineKeyboardButton(text="📋 Today's picks", callback_data="headlines"), types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"))
+    text = ("📰 *Welcome to CA Daily Read.*\n\n"
+        "Every day a curated selection of "
+        "culture, travel, food, science "
+        "and technology — to read at your "
+        "own pace in chat.\n\n"
+        "Tap *Today's picks* to begin.")
     bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -39,20 +40,20 @@ def headlines(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
-        types.InlineKeyboardButton(text="🎨 Πολιτισμός — εκθέσεις φθινοπώρου", callback_data="culture"),
-        types.InlineKeyboardButton(text="🍳 Κουζίνα — συνταγές με κυδώνι", callback_data="cuisine"),
-        types.InlineKeyboardButton(text="🏠 Ταξίδια — πέντε χωριά", callback_data="travel"),
-        types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"))
-    text = ("📋 *Τα θέματα της ημέρας*\n\n"
-        "Τρία κείμενα επιλεγμένα για σήμερα. "
-        "Κάθε ένα ολόκληρο στο chat.\n\n"
-        "*Πολιτισμός* — εκθέσεις φθινοπώρου: "
-        "πέντε ραντεβού στα ελληνικά μουσεία.\n\n"
-        "*Κουζίνα* — η εποχή του κυδωνιού: "
-        "τέσσερις κλασικές συνταγές.\n\n"
-        "*Ταξίδια* — πέντε ελληνικά χωριά "
-        "για φθινοπωρινά Σαββατοκύριακα.\n\n"
-        "Πατήστε έναν τίτλο για το πλήρες κείμενο.")
+        types.InlineKeyboardButton(text="🎨 Culture — fall exhibitions", callback_data="culture"),
+        types.InlineKeyboardButton(text="🍁 Food — Canadian classics", callback_data="cuisine"),
+        types.InlineKeyboardButton(text="🏠 Travel — five hidden towns", callback_data="travel"),
+        types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"))
+    text = ("📋 *Today's picks*\n\n"
+        "Three stories selected for today. "
+        "Each one complete in chat.\n\n"
+        "*Culture* — fall exhibitions: five "
+        "must-see shows at Canadian museums.\n\n"
+        "*Food* — Canadian classics: four "
+        "dishes that define our cuisine.\n\n"
+        "*Travel* — five hidden towns across "
+        "Canada for a long weekend.\n\n"
+        "Tap a title to read the full story.")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -61,26 +62,34 @@ def culture(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(open_button())
-    markup.row(types.InlineKeyboardButton(text="📋 Τα θέματα της ημέρας", callback_data="headlines"), types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"))
-    text = ("🎨 *Εκθέσεις φθινοπώρου: πέντε ραντεβού στα ελληνικά μουσεία*\n\n"
-        "Τα μουσεία ανοίγουν ξανά με νέα σεζόν.\n\n"
-        "*Αθήνα — τέχνη του 20ού αιώνα*\n"
-        "Μια μεγάλη αναδρομική στην Εθνική Πινακοθήκη "
-        "συγκεντρώνει έργα κορυφαίων Ελλήνων ζωγράφων. "
-        "Αρχειακό υλικό και αδημοσίευτες φωτογραφίες.\n\n"
-        "*Θεσσαλονίκη — βυζαντινή κληρονομιά*\n"
-        "Το Μουσείο Βυζαντινού Πολιτισμού παρουσιάζει "
-        "ψηφιδωτά και εικόνες. Μοναδική ευκαιρία.\n\n"
-        "*Ηράκλειο — μινωικός πολιτισμός*\n"
-        "Νέα ευρήματα από τις ανασκαφές στην Κνωσό "
-        "εκτίθενται για πρώτη φορά.\n\n"
-        "*Ναύπλιο — φωτογραφία νεοελληνικής ιστορίας*\n"
-        "Ασπρόμαυρα ρεπορτάζ αφηγούνται την πόλη "
-        "στα χρόνια της ανασυγκρότησης.\n\n"
-        "*Ιωάννινα — σύγχρονη γλυπτική*\n"
-        "Νέες εγκαταστάσεις στους υπαίθριους χώρους "
-        "δίπλα στη λίμνη.\n\n"
-        "_Ημερομηνίες στους ιστότοπους των μουσείων._")
+    markup.row(types.InlineKeyboardButton(text="📋 Today's picks", callback_data="headlines"), types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"))
+    text = ("🎨 *Fall exhibitions: five must-see "
+        "shows at Canadian museums*\n\n"
+        "Museums open the new season.\n\n"
+        "*Toronto — AGO*\n"
+        "The Art Gallery of Ontario presents "
+        "a major retrospective of the Group "
+        "of Seven. Rare sketches and field "
+        "studies alongside the iconic canvases.\n\n"
+        "*Montreal — MMFA*\n"
+        "Montreal Museum of Fine Arts hosts "
+        "an exhibition on contemporary "
+        "Indigenous art from coast to coast. "
+        "Painting, sculpture and installation.\n\n"
+        "*Vancouver — VAG*\n"
+        "Vancouver Art Gallery shows Emily "
+        "Carr and the forests of BC. New "
+        "restorations reveal colours unseen "
+        "for a century.\n\n"
+        "*Ottawa — National Gallery*\n"
+        "Inuit art from Kinngait Studios. "
+        "Prints, drawings and carvings that "
+        "tell the story of the North.\n\n"
+        "*Winnipeg — WAG-Qaumajuq*\n"
+        "The world's largest public collection "
+        "of Inuit art. New galleries dedicated "
+        "to Arctic sculpture and textile.\n\n"
+        "_Check museum websites for hours._")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -89,24 +98,33 @@ def cuisine(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(open_button())
-    markup.row(types.InlineKeyboardButton(text="📋 Τα θέματα της ημέρας", callback_data="headlines"), types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"))
-    text = ("🍳 *Η εποχή του κυδωνιού: τέσσερις κλασικές συνταγές*\n\n"
-        "*Κυδώνι ψητό στον φούρνο*\n"
-        "Κόβετε τα κυδώνια στα τέσσερα, βάζετε "
-        "ζάχαρη, κανέλα και γαρίφαλο. Ψήνετε "
-        "στους 180 για μία ώρα.\n\n"
-        "*Κυδωνόπαστο*\n"
-        "Βράζετε τα κυδώνια, πολτοποιείτε "
-        "με ζάχαρη και χυμό λεμονιού. "
-        "Το κλασικό γλυκό κουταλιού.\n\n"
-        "*Κυδώνι με κρέας*\n"
-        "Μοσχάρι κοκκινιστό με κυδώνια. "
-        "Κρεμμύδι, ντομάτα, κανέλα — "
-        "σιγοβράζει για δύο ώρες.\n\n"
-        "*Μαρμελάδα κυδώνι*\n"
-        "Κυδώνια τριμμένα με ζάχαρη και βανίλια. "
-        "Ιδανική για πρωινό με ψωμί.\n\n"
-        "_Δοσολογίες κατά βούληση._")
+    markup.row(types.InlineKeyboardButton(text="📋 Today's picks", callback_data="headlines"), types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"))
+    text = ("🍁 *Canadian classics: four dishes "
+        "that define our cuisine*\n\n"
+        "Canadian food is comfort, "
+        "community and cold-weather cooking.\n\n"
+        "*Poutine*\n"
+        "Fresh-cut fries, cheese curds "
+        "and hot gravy. The curds must "
+        "squeak. Born in Quebec, loved "
+        "everywhere. Best late at night.\n\n"
+        "*Tourtiere*\n"
+        "A savoury meat pie with pork, "
+        "veal and spices in a flaky crust. "
+        "Served at Christmas in Quebec "
+        "and across the Maritimes. Every "
+        "family has their own recipe.\n\n"
+        "*Butter Tarts*\n"
+        "Pastry shells filled with butter, "
+        "sugar, syrup and egg. Runny or "
+        "firm — the great Canadian debate. "
+        "With or without raisins.\n\n"
+        "*Nanaimo Bars*\n"
+        "Three layers: chocolate coconut "
+        "base, custard centre, chocolate "
+        "ganache top. No baking required. "
+        "Named after a town in BC.\n\n"
+        "_Best enjoyed with a double-double._")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -115,24 +133,35 @@ def travel(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(open_button())
-    markup.row(types.InlineKeyboardButton(text="📋 Τα θέματα της ημέρας", callback_data="headlines"), types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"))
-    text = ("🏠 *Πέντε ελληνικά χωριά για το φθινόπωρο*\n\n"
-        "*Ζαγοροχώρια (Ήπειρος)*\n"
-        "Πέτρινα γεφύρια, μονοπάτια και "
-        "παραδοσιακοί ξενώνες.\n\n"
-        "*Δημητσάνα (Πελοπόννησος)*\n"
-        "Χτισμένη πάνω από το φαράγγι του Λούσιου. "
-        "Μουσείο Υδροκίνησης και ήσυχα καφενεία.\n\n"
-        "*Μέτσοβο (Ήπειρος)*\n"
-        "Ορεινό κεφαλοχώρι με τυροκομικά "
-        "και κρασιά. Ιδιαίτερη ατμόσφαιρα.\n\n"
-        "*Μονεμβασιά (Πελοπόννησος)*\n"
-        "Βυζαντινή καστροπολιτεία κρυμμένη "
-        "πίσω από τον βράχο. Μαγεία.\n\n"
-        "*Νυμφαίο (Μακεδονία)*\n"
-        "Αρχοντικά, το καταφύγιο αρκούδων "
-        "και απόλυτη ησυχία.\n\n"
-        "_Κράτηση εντός εβδομάδας._")
+    markup.row(types.InlineKeyboardButton(text="📋 Today's picks", callback_data="headlines"), types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"))
+    text = ("🏠 *Five hidden towns across Canada*\n\n"
+        "*Lunenburg (Nova Scotia)*\n"
+        "A UNESCO World Heritage fishing "
+        "town. Colourful waterfront, fresh "
+        "lobster and the Bluenose legacy. "
+        "Fall colours at their finest.\n\n"
+        "*Elora (Ontario)*\n"
+        "A limestone gorge, heritage "
+        "buildings and artists' studios. "
+        "The Grand River runs through. "
+        "Quiet enough to hear it.\n\n"
+        "*Tofino (British Columbia)*\n"
+        "Surfing, old-growth rainforest "
+        "and storm watching on the Pacific. "
+        "A fishing village turned haven "
+        "for those who love wild coast.\n\n"
+        "*Kimberley (British Columbia)*\n"
+        "A former mining town in the "
+        "Rockies. Bavarian Platzl, skiing "
+        "and mountain biking. Quiet seasons "
+        "are the best seasons.\n\n"
+        "*Saint-Irénée (Quebec)*\n"
+        "A village on the St. Lawrence "
+        "where the river becomes the sea. "
+        "Domaine Forget concerts, autumn "
+        "leaves and Charlevoix cheese.\n\n"
+        "_Book ahead for Thanksgiving "
+        "weekend._")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -141,18 +170,18 @@ def summary(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(open_button())
-    markup.add(types.InlineKeyboardButton(text="📋 Τα θέματα της ημέρας", callback_data="headlines"))
-    markup.row(types.InlineKeyboardButton(text="📖 Γλωσσάριο", callback_data="glossary"), types.InlineKeyboardButton(text="❓ Συχνές ερωτήσεις", callback_data="faq"))
-    markup.row(types.InlineKeyboardButton(text="✏️ Επικοινωνία", callback_data="contact"), types.InlineKeyboardButton(text="🏛 Πληροφορίες", callback_data="about"))
-    text = ("🏛 *Περίληψη*\n\n"
-        "Από αυτό το μενού μπορείτε:\n\n"
-        "• Να διαβάσετε *τα θέματα της ημέρας*.\n"
-        "• Να δείτε τις στήλες: Πολιτισμός, "
-        "Ταξίδια, Κουζίνα, Επιστήμη.\n"
-        "• Να δείτε το γλωσσάριο και τις "
-        "συχνές ερωτήσεις.\n"
-        "• Να μάθετε για εμάς και να επικοινωνήσετε.\n\n"
-        "Για πλήρη έκδοση, πατήστε το κουμπί.")
+    markup.add(types.InlineKeyboardButton(text="📋 Today's picks", callback_data="headlines"))
+    markup.row(types.InlineKeyboardButton(text="📖 Glossary", callback_data="glossary"), types.InlineKeyboardButton(text="❓ FAQ", callback_data="faq"))
+    markup.row(types.InlineKeyboardButton(text="✏️ Contact", callback_data="contact"), types.InlineKeyboardButton(text="🏛 About", callback_data="about"))
+    text = ("🏛 *Summary*\n\n"
+        "From this menu you can:\n\n"
+        "• Read *today's picks* and our stories.\n"
+        "• Browse sections: Culture, Food, "
+        "Travel, Science.\n"
+        "• Check the glossary and FAQ.\n"
+        "• Learn about us and get in touch.\n\n"
+        "For the full edition, use the "
+        "button below.")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -160,19 +189,22 @@ def summary(call):
 def glossary(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(types.InlineKeyboardButton(text="📋 Τα θέματα της ημέρας", callback_data="headlines"))
-    markup.add(types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"))
-    text = ("📖 *Μικρό γλωσσάριο*\n\n"
-        "*Σύνταξη* — η ομάδα που επιλέγει "
-        "και προετοιμάζει τα κείμενα.\n\n"
-        "*Κύριο άρθρο* — άρθρο γνώμης που "
-        "ανοίγει μια ενότητα.\n\n"
-        "*Φωτορεπορτάζ* — κείμενο χτισμένο "
-        "γύρω από φωτογραφίες.\n\n"
-        "*Διαχρονικό περιεχόμενο* — κείμενο "
-        "που δεν εξαρτάται από την επικαιρότητα.\n\n"
-        "*Στήλη* — μόνιμη ενότητα αφιερωμένη "
-        "σε ένα θέμα.")
+    markup.add(types.InlineKeyboardButton(text="📋 Today's picks", callback_data="headlines"))
+    markup.add(types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"))
+    text = ("📖 *A short glossary*\n\n"
+        "*Newsroom* — the team that selects "
+        "and prepares stories.\n\n"
+        "*Editorial* — an opinion piece that "
+        "opens a section.\n\n"
+        "*Photojournalism* — storytelling "
+        "built around photographs.\n\n"
+        "*Evergreen content* — stories whose "
+        "relevance does not depend on the "
+        "news of the day.\n\n"
+        "*Correspondent* — a journalist "
+        "reporting from the field.\n\n"
+        "*Column* — a recurring section "
+        "dedicated to a specific topic.")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -180,19 +212,18 @@ def glossary(call):
 def faq(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=1)
-    markup.add(types.InlineKeyboardButton(text="📋 Τα θέματα της ημέρας", callback_data="headlines"))
-    markup.add(types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"))
-    text = ("❓ *Συχνές ερωτήσεις*\n\n"
-        "*Είναι επίσημο αυτό το bot;*\n"
-        "Τα Καθημερινά Θέματα είναι ανεξάρτητο "
-        "εκδοτικό εγχείρημα.\n\n"
-        "*Πόσο συχνά ενημερώνεται;*\n"
-        "Η επιλογή ανανεώνεται εποχιακά.\n\n"
-        "*Πώς σιγάζω τις ειδοποιήσεις;*\n"
-        "Από τις ρυθμίσεις του chat στο Telegram.\n\n"
-        "*Μπορώ να μοιραστώ άρθρο;*\n"
-        "Ναι, μέσω των επιλογών κοινής χρήσης "
-        "του Telegram.")
+    markup.add(types.InlineKeyboardButton(text="📋 Today's picks", callback_data="headlines"))
+    markup.add(types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"))
+    text = ("❓ *Frequently asked questions*\n\n"
+        "*Is this bot official?*\n"
+        "CA Daily Read is an independent "
+        "editorial project.\n\n"
+        "*How often is it updated?*\n"
+        "The selection is refreshed seasonally.\n\n"
+        "*How do I mute notifications?*\n"
+        "From Telegram chat settings.\n\n"
+        "*Can I share a story?*\n"
+        "Yes, using Telegram sharing options.")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -200,15 +231,16 @@ def faq(call):
 def contact(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.row(types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"), types.InlineKeyboardButton(text="🏛 Πληροφορίες", callback_data="about"))
-    text = ("✏️ *Επικοινωνία*\n\n"
-        "Για εκδοτική αλληλογραφία:\n"
-        "• E-mail: info@kathimerinathemata.gr\n\n"
-        "*Εκδότης*\n"
-        "Καθημερινά Θέματα\n"
-        "Αθήνα, Ελλάδα\n\n"
-        "Παρατηρήσεις και σχόλια αναγνωστών "
-        "τις εργάσιμες ημέρες.")
+    markup.row(types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"), types.InlineKeyboardButton(text="🏛 About", callback_data="about"))
+    text = ("✏️ *Contact*\n\n"
+        "For editorial correspondence:\n"
+        "• E-mail: hello@cadailyread.ca\n\n"
+        "*Publisher*\n"
+        "CA Daily Read Inc.\n"
+        "100 King Street West\n"
+        "Toronto, ON M5X 1A9\n"
+        "Canada\n\n"
+        "Reader feedback on working days.")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -217,15 +249,17 @@ def about(call):
     bot.answer_callback_query(call.id)
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(open_button())
-    markup.row(types.InlineKeyboardButton(text="🏛 Περίληψη", callback_data="summary"), types.InlineKeyboardButton(text="✏️ Επικοινωνία", callback_data="contact"))
-    text = ("🏛 *Πληροφορίες για τα Καθημερινά Θέματα*\n\n"
-        "Τα Καθημερινά Θέματα είναι ένα ανεξάρτητο "
-        "εκδοτικό εγχείρημα αφιερωμένο στον πολιτισμό, "
-        "τα ταξίδια, την κουζίνα και την τεχνολογία.\n\n"
-        "Η σύνταξη επιλέγει κάθε μέρα περιεχόμενο "
-        "για μια ενημερωμένη παύση από την καθημερινότητα.\n\n"
-        "Αυτή η έκδοση Telegram σχεδιάστηκε για "
-        "άνετη ανάγνωση μέσα από το chat.")
+    markup.row(types.InlineKeyboardButton(text="🏛 Summary", callback_data="summary"), types.InlineKeyboardButton(text="✏️ Contact", callback_data="contact"))
+    text = ("🏛 *About CA Daily Read*\n\n"
+        "CA Daily Read is an independent "
+        "editorial project dedicated to "
+        "culture, food, travel and "
+        "technology in Canada.\n\n"
+        "The editorial team selects quality "
+        "content every day for an informed "
+        "break from the daily routine.\n\n"
+        "This Telegram edition is designed "
+        "for comfortable reading in chat.")
     bot.send_message(call.message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -233,9 +267,9 @@ def about(call):
 def handle_all(message):
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(open_button())
-    markup.add(types.InlineKeyboardButton(text="📋 Τα θέματα της ημέρας", callback_data="headlines"))
-    bot.send_message(message.chat.id, "📰 Καλώς ήρθατε! Πατήστε *Τα θέματα της ημέρας* για να ξεκινήσετε.", parse_mode="Markdown", reply_markup=markup)
+    markup.add(types.InlineKeyboardButton(text="📋 Today's picks", callback_data="headlines"))
+    bot.send_message(message.chat.id, "📰 Welcome! Tap *Today's picks* to begin.", parse_mode="Markdown", reply_markup=markup)
 
 
-print("Daily Topics Greece Bot is running...")
+print("CA Daily Read Bot is running...")
 bot.infinity_polling()
